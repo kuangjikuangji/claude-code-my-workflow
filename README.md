@@ -129,7 +129,7 @@ The guide covers Claude Code's latest capabilities:
 ## What's Included
 
 <details>
-<summary><strong>10 agents, 22 skills, 18 rules, 7 hooks</strong> (click to expand)</summary>
+<summary><strong>11 agents, 23 skills, 21 rules, 7 hooks</strong> (click to expand;本项目新增项见各表标注)</summary>
 
 ### Agents (`.claude/agents/`)
 
@@ -145,6 +145,7 @@ The guide covers Claude Code's latest capabilities:
 | `quarto-fixer` | Implements fixes from the critic agent |
 | `verifier` | End-to-end task completion verification |
 | `domain-reviewer` | **Template** for your field-specific substance reviewer |
+| `code-reviewer` | **本项目新增** — Python + Stata code review (replaces `r-reviewer` in this fork) |
 
 ### Skills (`.claude/skills/`)
 
@@ -172,6 +173,7 @@ The guide covers Claude Code's latest capabilities:
 | `/learn` | Extract non-obvious discoveries into persistent skills |
 | `/context-status` | Show session health and context usage |
 | `/deep-audit` | Repository-wide consistency audit |
+| `/run-stata` | **本项目新增** — run Stata do files in batch mode and check logs |
 
 ### Research Workflow
 
@@ -216,6 +218,9 @@ Rules use path-scoped loading: **always-on** rules load every session (~100 line
 | `orchestrator-research` | `*.R`, `explorations/` | Simple orchestrator for research (no multi-round reviews) |
 | `exploration-folder-protocol` | `explorations/` | Structured sandbox for experimental work |
 | `exploration-fast-track` | `explorations/` | Lightweight exploration workflow (60/100 threshold) |
+| `python-code-conventions` | **本项目新增** `code/**/*.py` | Python coding standards for this fork |
+| `stata-code-conventions` | **本项目新增** `code/**/*.do` | Stata do-file standards (header path block, version 19.5) |
+| `data-provenance` | **本项目新增** `data/**`, `code/**` | Raw-data read-only discipline and data dictionary |
 
 ### Templates (`templates/`)
 
