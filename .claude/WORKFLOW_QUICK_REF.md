@@ -1,86 +1,85 @@
-# Workflow Quick Reference
+# 工作流速查
 
-**Model:** Contractor (you direct, Claude orchestrates)
+**模式:** 承包商(你下达指令,Claude 自主编排)
 
 ---
 
-## The Loop
+## 循环
 
 ```
-Your instruction
+你的指令
     ↓
-[PLAN] (if multi-file or unclear) → Show plan → Your approval
+[计划](多文件或需求不清时)→ 展示计划 → 你批准
     ↓
-[EXECUTE] Implement, verify, done
+[执行] 实施、验证、完成
     ↓
-[REPORT] Summary + what's ready
+[汇报] 摘要 + 就绪状态
     ↓
-Repeat
+重复
 ```
 
 ---
 
-## I Ask You When
+## 需要问你时
 
-- **Design forks:** "Option A (fast) vs. Option B (robust). Which?"
-- **Code ambiguity:** "Spec unclear on X. Assume Y?"
-- **Replication edge case:** "Just missed tolerance. Investigate?"
-- **Scope question:** "Also refactor Y while here, or focus on X?"
-
----
-
-## I Just Execute When
-
-- Code fix is obvious (bug, pattern application)
-- Verification (tolerance checks, tests, compilation)
-- Documentation (logs, commits)
-- Plotting (per established standards)
-- Deployment (after you approve, I ship automatically)
+- **设计分叉:** 「方案 A(快)vs 方案 B(稳健),选哪个?」
+- **代码歧义:** 「规格对 X 不清楚,按 Y 假设?」
+- **研究判断:** 「识别假设存疑,继续还是换设定?」
+- **范围问题:** 「顺带做 Y,还是专注 X?」
 
 ---
 
-## Quality Gates (No Exceptions)
+## 直接执行时
 
-| Score | Action |
-|-------|--------|
-| >= 80 | Ready to commit |
-| < 80  | Fix blocking issues |
-
----
-
-## Non-Negotiables (Customize These)
-
-<!-- Replace with YOUR project's locked-in preferences -->
-
-- [YOUR PATH CONVENTION] (e.g., `here::here()` for R, relative paths for LaTeX)
-- [YOUR SEED CONVENTION] (e.g., `set.seed()` once at top for stochastic code)
-- [YOUR FIGURE STANDARDS] (e.g., white bg, 300 DPI, custom theme)
-- [YOUR COLOR PALETTE] (e.g., institutional colors)
-- [YOUR TOLERANCE THRESHOLDS] (e.g., 1e-6 for point estimates)
+- 代码修复明确(bug、模式套用)
+- 验证(运行脚本、Stata 日志检查、结构检查)
+- 文档(日志、提交)
+- 制图(按既定图标准)
+- 数据清洗(按既定规范)
 
 ---
 
-## Preferences
+## 质量门槛(无例外)
 
-<!-- Fill in as you discover your working style -->
-
-**Visual:** [How you want figures/plots handled]
-**Reporting:** [Concise bullets? Detailed prose? Details on request?]
-**Session logs:** Always (post-plan, incremental, end-of-session)
-**Replication:** [How strict? Flag near-misses?]
+| 分数 | 动作 |
+|------|------|
+| >= 80 | 可提交 main |
+| < 80  | 修复阻塞问题 |
 
 ---
 
-## Exploration Mode
+## 非谈判项
 
-For experimental work, use the **Fast-Track** workflow:
-- Work in `explorations/` folder
-- 60/100 quality threshold (vs. 80/100 for production)
-- No plan needed — just a research value check (2 min)
-- See `.claude/rules/exploration-fast-track.md`
+- **路径约定:** 仓库根相对;代码 `code/{python,stata}`;数据 `data/{raw,processed}`;图 `Figures/`;表 `tables/`;论文 `paper/`
+- **种子约定:** `SEED = 20251105`;Python 用 `np.random.default_rng(SEED)`;Stata 用 `set seed 20251105`
+- **图标准:** PNG 300 DPI + PDF 双输出;Okabe-Ito / viridis 色板;英文标签;默认 6.5×4 英寸
+- **容差阈值:** 点估计差 < 0.01;标准误差 < 0.05;样本量精确;p 值同显著性水平;百分比 < 0.1pp
+- **Stata 约定:** do 首行 `version` 声明(值见 `stata-code-conventions.md`);从 `code/stata/` 目录调用 `-b`;日志提交
+- **论文数值:** 正文数字必须来自 `code/stata/*.log` 或 `tables/`,禁止手打
+- **原始数据:** 永不入库、永不直接修改;只经 `code/python/` 脚本加工
+- **提交:** 直接提交 main,质量 ≥ 80
 
 ---
 
-## Next Step
+## 偏好
 
-You provide task → I plan (if needed) → Your approval → Execute → Done.
+**视觉:** 出版级图表优先,统一主题与色板
+**汇报:** 简洁要点 + 详情按需展开
+**会话日志:** 总是(计划后、增量、会话结束)
+**复制:** 严格到容差;近失配必报并调查
+
+---
+
+## 探索模式
+
+实验性工作用 **Fast-Track** 流程:
+- 在 `explorations/` 目录下工作
+- 60/100 质量门槛(生产为 80/100)
+- 无需计划,仅做 2 分钟研究价值检查
+- 见 `.claude/rules/exploration-fast-track.md`
+
+---
+
+## 下一步
+
+你提供任务 → 我计划(如需要)→ 你批准 → 执行 → 完成。

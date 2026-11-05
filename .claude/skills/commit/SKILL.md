@@ -1,17 +1,17 @@
 ---
 name: commit
-description: Stage, commit, create PR, and merge to main. Use for the standard commit-PR-merge cycle.
-argument-hint: "[optional: commit message]"
+description: 直接提交 main 的个人研究项目提交流程(无 PR)。质量分 ≥80 时使用。
+argument-hint: "[可选:提交信息]"
 allowed-tools: ["Bash", "Read", "Glob"]
 ---
 
-# Commit, PR, and Merge
+# 提交到 main(直接提交)
 
-Stage changes, commit with a descriptive message, create a PR, and merge to main.
+暂存改动、写描述性提交信息、直接提交并推送到 main。本项目无 PR 流程。
 
-## Steps
+## 步骤
 
-1. **Check current state:**
+1. **检查当前状态:**
 
 ```bash
 git status
@@ -19,60 +19,40 @@ git diff --stat
 git log --oneline -5
 ```
 
-2. **Create a branch** from the current state:
+2. **质量门槛检查:** 确认本次改动内容质量分 ≥ 80(按 `.claude/rules/quality-gates.md`);< 80 先修复阻塞项。
 
-```bash
-git checkout -b <short-descriptive-branch-name>
-```
-
-3. **Stage files** — add specific files (never use `git add -A`):
+3. **暂存文件** — 逐文件添加(绝不用 `git add -A`):
 
 ```bash
 git add <file1> <file2> ...
 ```
 
-Do NOT stage `.claude/settings.local.json` or any files containing secrets.
+不暂存 `.claude/settings.local.json`、`data/raw/`、`data/processed/`、任何含密钥的文件。
 
-4. **Commit** with a descriptive message:
+4. **提交** — 描述性信息:
 
-If `$ARGUMENTS` is provided, use it as the commit message. Otherwise, analyze the staged changes and write a message that explains *why*, not just *what*.
+`$ARGUMENTS` 提供则原样使用;否则分析暂存改动,写解释 *为什么* 而非 *做了什么* 的信息。
 
 ```bash
 git commit -m "$(cat <<'EOF'
-<commit message here>
+<提交信息>
 EOF
 )"
 ```
 
-5. **Push and create PR:**
+5. **推送:**
 
 ```bash
-git push -u origin <branch-name>
-gh pr create --title "<short title>" --body "$(cat <<'EOF'
-## Summary
-<1-3 bullet points>
-
-## Test plan
-<checklist>
-
-🤖 Generated with [Claude Code](https://claude.com/claude-code)
-EOF
-)"
+git push origin main
 ```
 
-6. **Merge and clean up:**
+6. **提交后生成质量报告** 至 `quality_reports/merges/YYYY-MM-DD_<主题>.md`(格式见 `templates/quality-report.md`)。
 
-```bash
-gh pr merge <pr-number> --merge --delete-branch
-git checkout main
-git pull
-```
+7. **汇报** 提交哈希与摘要。
 
-7. **Report** the PR URL and what was merged.
+## 重要
 
-## Important
-
-- Always create a NEW branch — never commit directly to main
-- Exclude `settings.local.json` and sensitive files from staging
-- Use `--merge` (not `--squash` or `--rebase`) unless asked otherwise
-- If the commit message from `$ARGUMENTS` is provided, use it exactly
+- 直接提交 main——不开分支、不建 PR
+- 排除 `settings.local.json`、数据目录与敏感文件
+- `$ARGUMENTS` 提供的信息原样使用
+- 提交信息末尾加 `Co-Authored-By: Claude Code <noreply@anthropic.com>`

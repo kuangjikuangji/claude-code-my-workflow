@@ -70,3 +70,7 @@ When a mistake is corrected, append a `[LEARN:category]` entry below.
 [LEARN:meta] Dogfooding principles must be enforced: plan-first, spec-then-plan, quality gates, session logs → we follow our own guide.
 
 [LEARN:meta] Template development work (building infrastructure, docs) doesn't create session logs in quality_reports/ → those are for user work (slides, analysis), not meta-work. Keeps template clean for users who fork.
+
+[LEARN:meta] Path-scoped rules/agents/skills can be "disabled" by removing their trigger directories while keeping the files in .claude/ → working project stays clean, template assets remain available for future reactivation (e.g., slide rules survive a paper-first adaptation).
+
+[LEARN:meta] When adapting the template to a working project, project-specific decisions belong in CLAUDE.md + .claude/state/personal-memory.md (machine facts like Stata full path, no-TeX fact); MEMORY.md keeps only generic workflow learnings.

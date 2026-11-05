@@ -1,44 +1,44 @@
 ---
 name: research-ideation
-description: Generate structured research questions, testable hypotheses, and empirical strategies from a topic or dataset
-argument-hint: "[topic, phenomenon, or dataset description]"
+description: 从主题或数据集出发,生成结构化的研究问题、可检验假设与实证策略
+argument-hint: "[主题、现象或数据集描述]"
 allowed-tools: ["Read", "Grep", "Glob", "Write"]
 ---
 
-# Research Ideation
+# 研究构思
 
-Generate structured research questions, testable hypotheses, and empirical strategies from a topic, phenomenon, or dataset.
+从主题、现象或数据集出发,生成结构化的研究问题、可检验假设与实证策略。
 
-**Input:** `$ARGUMENTS` — a topic (e.g., "minimum wage effects on employment"), a phenomenon (e.g., "why do firms cluster geographically?"), or a dataset description (e.g., "panel of US counties with pollution and health outcomes, 2000-2020").
-
----
-
-## Steps
-
-1. **Understand the input.** Read `$ARGUMENTS` and any referenced files. Check `master_supporting_docs/` for related papers. Check `.claude/rules/` for domain conventions.
-
-2. **Generate 3-5 research questions** ordered from descriptive to causal:
-   - **Descriptive:** What are the patterns? (e.g., "How has X evolved over time?")
-   - **Correlational:** What factors are associated? (e.g., "Is X correlated with Y after controlling for Z?")
-   - **Causal:** What is the effect? (e.g., "What is the causal effect of X on Y?")
-   - **Mechanism:** Why does the effect exist? (e.g., "Through what channel does X affect Y?")
-   - **Policy:** What are the implications? (e.g., "Would policy X improve outcome Y?")
-
-3. **For each research question, develop:**
-   - **Hypothesis:** A testable prediction with expected sign/magnitude
-   - **Identification strategy:** How to establish causality (DiD, IV, RDD, synthetic control, etc.)
-   - **Data requirements:** What data would be needed? Is it available?
-   - **Key assumptions:** What must hold for the strategy to be valid?
-   - **Potential pitfalls:** Common threats to identification
-   - **Related literature:** 2-3 papers using similar approaches
-
-4. **Rank the questions** by feasibility and contribution.
-
-5. **Save the output** to `quality_reports/research_ideation_[sanitized_topic].md`
+**输入:** `$ARGUMENTS` —— 一个主题(例如"最低工资对就业的影响")、一个现象(例如"企业为何在地理上集聚?"),或一段数据集描述(例如"2000-2020 年美国县级面板数据,包含污染与健康结果")。
 
 ---
 
-## Output Format
+## 步骤
+
+1. **理解输入。** 阅读 `$ARGUMENTS` 及任何被引用的文件。检查 `master_supporting_docs/` 中的相关论文。检查 `.claude/rules/` 中的领域惯例。
+
+2. **生成 3-5 个研究问题**,按从描述性到因果性的顺序排列:
+   - **描述性:** 有哪些模式?(例如"X 随时间如何演变?")
+   - **相关性:** 哪些因素与之相关?(例如"控制 Z 后,X 与 Y 是否相关?")
+   - **因果性:** 效应是什么?(例如"X 对 Y 的因果效应是什么?")
+   - **机制:** 效应为何存在?(例如"X 通过什么渠道影响 Y?")
+   - **政策:** 有何含义?(例如"政策 X 是否会改善结果 Y?")
+
+3. **为每个研究问题展开:**
+   - **假设:** 带有预期符号/量级的可检验预测
+   - **识别策略:** 如何建立因果性(DiD、IV、RDD、合成控制等)
+   - **数据要求:** 需要哪些数据?是否可得?
+   - **关键假设:** 策略有效必须满足什么条件?
+   - **潜在陷阱:** 常见的识别威胁
+   - **相关文献:** 2-3 篇采用类似方法的论文
+
+4. **对问题排序**,依据可行性与贡献度。
+
+5. **保存输出**至 `quality_reports/research_ideation_[sanitized_topic].md`
+
+---
+
+## 输出格式
 
 ```markdown
 # Research Ideation: [Topic]
@@ -94,9 +94,9 @@ Generate structured research questions, testable hypotheses, and empirical strat
 
 ---
 
-## Principles
+## 原则
 
-- **Be creative but grounded.** Push beyond obvious questions, but every suggestion must be empirically feasible.
-- **Think like a referee.** For each causal question, immediately identify the identification challenge.
-- **Consider data availability.** A brilliant question with no available data is not actionable.
-- **Suggest specific datasets** where possible (FRED, Census, PSID, administrative data, etc.).
+- **要有创造力但立足现实。** 超越显而易见的问题,但每条建议都必须实证可行。
+- **像审稿人一样思考。** 对每个因果问题,立即识别其识别挑战。
+- **考虑数据可得性。** 没有可用数据的绝妙问题无法付诸行动。
+- **尽可能建议具体数据集**(FRED、Census、PSID、行政数据等)。

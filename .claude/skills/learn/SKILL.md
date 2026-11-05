@@ -1,47 +1,47 @@
 ---
 name: learn
 description: |
-  Extract reusable knowledge from the current session into a persistent skill.
-  Use when you discover something non-obvious, create a workaround, or develop
-  a multi-step workflow that future sessions would benefit from.
+  从当前会话中提取可复用的知识,形成持久化技能。
+  适用于:当发现非显而易见的问题、创建变通方案,或开发出未来会话可受益的
+  多步骤工作流时。
 author: Claude Code Academic Workflow
 version: 1.0.0
-argument-hint: "[skill-name (kebab-case)]"
+argument-hint: "[技能名称(kebab-case)]"
 allowed-tools: ["Read", "Write", "Bash", "Glob", "Grep"]
 ---
 
-# /learn — Skill Extraction Workflow
+# /learn —— 技能提取工作流
 
-Extract non-obvious discoveries into reusable skills that persist across sessions.
+将非显而易见的发现提取为可跨会话持久复用的技能。
 
-## When to Use This Skill
+## 何时使用本技能
 
-Invoke `/learn` when you encounter:
+遇到以下情况时调用 `/learn`:
 
-- **Non-obvious debugging** — Investigation that took significant effort, not in docs
-- **Misleading errors** — Error message was wrong, found the real cause
-- **Workarounds** — Found a limitation with a creative solution
-- **Tool integration** — Undocumented API usage or configuration
-- **Trial-and-error** — Multiple attempts before success
-- **Repeatable workflows** — Multi-step task you'd do again
-- **User-facing automation** — Reports, checks, or processes users will request
+- **非显而易见的调试** —— 花费大量精力的调查,文档中并无记载
+- **误导性错误** —— 错误信息有误,最终找到了真正原因
+- **变通方案** —— 发现限制并以创造性方案解决
+- **工具集成** —— 未记录的 API 用法或配置
+- **试错过程** —— 多次尝试后才成功
+- **可重复工作流** —— 你会再次执行的多步骤任务
+- **面向用户的自动化** —— 用户会请求的报告、检查或流程
 
-## Workflow Phases
+## 工作流阶段
 
-### PHASE 1: Evaluate (Self-Assessment)
+### 阶段 1:评估(自我评估)
 
-Before creating a skill, answer these questions:
+创建技能之前,先回答这些问题:
 
-1. "What did I just learn that wasn't obvious before starting?"
-2. "Would future-me benefit from this being documented?"
-3. "Was the solution non-obvious from documentation alone?"
-4. "Is this a multi-step workflow I'd repeat?"
+1. "我刚刚学到了什么在开始前并不显而易见的东西?"
+2. "未来的我会因这些内容被记录而受益吗?"
+3. "仅凭文档能否得出这个非显而易见的解决方案?"
+4. "这是我愿意重复执行的多步骤工作流吗?"
 
-**Continue only if YES to at least one question.**
+**至少一个问题回答"是"才继续。**
 
-### PHASE 2: Check Existing Skills
+### 阶段 2:检查已有技能
 
-Search for related skills to avoid duplication:
+搜索相关技能以避免重复:
 
 ```bash
 # Check project skills
@@ -51,14 +51,14 @@ ls .claude/skills/ 2>/dev/null
 grep -r -i "KEYWORD" .claude/skills/ 2>/dev/null
 ```
 
-**Outcomes:**
-- Nothing related → Create new skill (continue to Phase 3)
-- Same trigger & fix → Update existing skill (bump version)
-- Partial overlap → Update with new variant
+**结果:**
+- 无相关内容 → 创建新技能(继续阶段 3)
+- 相同触发条件与方案 → 更新已有技能(提升版本号)
+- 部分重叠 → 作为新变体更新
 
-### PHASE 3: Create Skill
+### 阶段 3:创建技能
 
-Create the skill file at `.claude/skills/[skill-name]/SKILL.md`:
+在 `.claude/skills/[skill-name]/SKILL.md` 创建技能文件:
 
 ```yaml
 ---
@@ -97,20 +97,20 @@ argument-hint: "[expected arguments]"  # Optional
 [Documentation links, related files, or prior discussions]
 ```
 
-### PHASE 4: Quality Gates
+### 阶段 4:质量门禁
 
-Before finalizing, verify:
+定稿前,核实:
 
-- [ ] Description has specific trigger conditions (not vague)
-- [ ] Solution was verified to work (tested)
-- [ ] Content is specific enough to be actionable
-- [ ] Content is general enough to be reusable
-- [ ] No sensitive information (credentials, personal data)
-- [ ] Skill name is descriptive and uses kebab-case
+- [ ] 描述包含具体触发条件(而非含糊表述)
+- [ ] 解决方案已验证可用(经过测试)
+- [ ] 内容足够具体,可据以行动
+- [ ] 内容足够通用,可复用
+- [ ] 不含敏感信息(凭据、个人数据)
+- [ ] 技能名称具有描述性,使用 kebab-case
 
-## Output
+## 输出
 
-After creating the skill, report:
+创建技能后,报告:
 
 ```
 ✓ Skill created: .claude/skills/[name]/SKILL.md
@@ -118,9 +118,9 @@ After creating the skill, report:
   Problem: [what it solves]
 ```
 
-## Example: Creating a Skill
+## 示例:创建技能
 
-User discovers that a specific R package silently drops observations:
+用户发现某个 R 包会静默丢弃观测值:
 
 ```markdown
 ---

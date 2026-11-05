@@ -8,7 +8,6 @@
 *.blg
 *.fdb_latexmk
 *.fls
-*.log
 *.nav
 *.out
 *.snm
@@ -17,9 +16,22 @@
 *.synctex.gz
 *.run.xml
 *-blx.bib
+# NOTE: *.log removed from the list above on 2026-11-05.
+# Stata batch-mode logs (code/stata/*.log) are intentionally committed as
+# the audit trail for regression output. Be mindful that logs produced by
+# other tools (pandoc, etc.) will also be tracked now.
 
 # Compiled PDFs (uncomment to track specific PDFs)
 # *.pdf
+
+# Research data (never commit raw/processed data)
+data/raw/
+data/processed/
+
+# Stata artifacts (keep .do files and .log files)
+*.dta
+*.smcl
+*.stpr
 
 # Python
 __pycache__/

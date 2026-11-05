@@ -1,47 +1,41 @@
 ---
 paths:
-  - "Slides/**/*.tex"
-  - "Quarto/**/*.qmd"
+  - "paper/**"
   - "quality_reports/**"
 ---
 
-# Proofreading Agent Protocol (MANDATORY)
+# 校对代理协议(必执行)
 
-**Every lecture file MUST be reviewed before any commit or PR.**
+**论文每个 .tex 在提交前必须校对。**
 
-**CRITICAL RULE: The agent must NEVER apply changes directly. It proposes all changes for review first.**
+**关键规则:代理绝不直接改文件。先提议,批准后应用。**
 
-## What the Agent Checks
+## 代理检查项
 
-1. **Grammar** -- subject-verb agreement, missing articles, wrong prepositions
-2. **Typos** -- misspellings, search-and-replace corruption, duplicated words
-3. **Overflow** -- overfull hbox (Beamer), content exceeding slide boundaries (Quarto)
-4. **Consistency** -- notation, citation style (`\citet` vs `\citep`, `[@key]`), terminology
-5. **Academic quality** -- informal abbreviations, missing words, awkward phrasing
+1. **语法** — 主谓一致、冠词、介词(英文论文)
+2. **拼写** — 拼错、替换损坏、重复词
+3. **布局风险** — 表格超宽、长公式拆分建议(本机无编译,凭结构与经验判断;最终以 Overleaf 编译为准)
+4. **一致性** — 符号、引用风格(`\citet` vs `\citep`)、术语、变量命名
+5. **学术质量** — 非正式缩写、缺词、拗口表达
 
-## Three-Phase Workflow
+## 三段式流程
 
-### Phase 1: Review & Propose (NO EDITS)
+### 阶段 1:评审与提议(不编辑)
 
-Each agent:
-1. Reads the entire file
-2. Produces a **report** with every proposed change:
-   - Location (line number or slide title)
-   - Current text
-   - Proposed fix
-   - Category (grammar / typo / overflow / consistency)
-3. Saves report to `quality_reports/` (e.g., `quality_reports/LectureN_Topic_report.md`)
-4. **Does NOT modify any source files**
+代理:
+1. 通读全文
+2. 产出报告,列出每处建议:位置(行号/段落)、原文、修改建议、类别(语法/拼写/布局/一致性)
+3. 报告存 `quality_reports/`(如 `quality_reports/paper_proofread_report.md`)
+4. **不修改任何源文件**
 
-### Phase 2: Review & Approve
+### 阶段 2:评审与批准
 
-The user reviews the proposed changes:
-- Accepts all, accepts selectively, or requests modifications
-- **Only after explicit approval** does the agent proceed
+用户审阅建议:全部接受、选择性接受、或要求修改。
+**明确批准后**代理才继续。
 
-### Phase 3: Apply Fixes
+### 阶段 3:应用修改
 
-Apply only approved changes:
-- Use Edit tool; use `replace_all: true` for issues with multiple instances
-- Verify each edit succeeded
-- Report completion summary
+只应用已批准项:
+- 用 Edit 工具;多处同类问题用 `replace_all: true`
+- 验证每处编辑成功
+- 汇报完成摘要

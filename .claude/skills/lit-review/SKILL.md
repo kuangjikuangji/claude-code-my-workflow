@@ -1,46 +1,46 @@
 ---
 name: lit-review
-description: Structured literature search and synthesis with citation extraction and gap identification
-argument-hint: "[topic, paper title, or research question]"
+description: 结构化文献检索与综合,包含引文提取与研究空白识别
+argument-hint: "[主题、论文标题或研究问题]"
 allowed-tools: ["Read", "Grep", "Glob", "Write", "WebSearch", "WebFetch"]
 ---
 
-# Literature Review
+# 文献综述
 
-Conduct a structured literature search and synthesis on the given topic.
+针对给定主题开展结构化的文献检索与综合。
 
-**Input:** `$ARGUMENTS` — a topic, paper title, research question, or phenomenon to investigate.
-
----
-
-## Steps
-
-1. **Parse the topic** from `$ARGUMENTS`. If a specific paper is named, use it as the anchor.
-
-2. **Search for related work** using available tools:
-   - Check `master_supporting_docs/supporting_papers/` for uploaded papers
-   - Use `WebSearch` to find recent publications (if available)
-   - Use `WebFetch` to access working paper repositories (if available)
-   - Read any existing `.bib` file for papers already in the project
-
-3. **Organize findings** into these categories:
-   - **Theoretical contributions** — models, frameworks, mechanisms
-   - **Empirical findings** — key results, effect sizes, data sources
-   - **Methodological innovations** — new estimators, identification strategies, inference methods
-   - **Open debates** — unresolved disagreements in the literature
-
-4. **Identify gaps and opportunities:**
-   - What questions remain unanswered?
-   - What data or methods could address them?
-   - Where do findings conflict?
-
-5. **Extract citations** in BibTeX format for all papers discussed.
-
-6. **Save the report** to `quality_reports/lit_review_[sanitized_topic].md`
+**输入:** `$ARGUMENTS` —— 要考察的主题、论文标题、研究问题或现象。
 
 ---
 
-## Output Format
+## 步骤
+
+1. **解析主题**:从 `$ARGUMENTS` 中解析主题。如指定了具体论文,则以该论文为锚点。
+
+2. **检索相关工作**:使用可用工具:
+   - 检查 `master_supporting_docs/supporting_papers/` 中已上传的论文
+   - 使用 `WebSearch` 查找近期发表成果(如可用)
+   - 使用 `WebFetch` 访问工作论文库(如可用)
+   - 阅读项目中已有的 `.bib` 文件,查看已收录的论文
+
+3. **归类发现**:归入以下类别:
+   - **理论贡献** —— 模型、框架、机制
+   - **实证发现** —— 关键结果、效应量、数据来源
+   - **方法创新** —— 新的估计量、识别策略、推断方法
+   - **未决争论** —— 文献中尚未解决的分歧
+
+4. **识别空白与机会:**
+   - 哪些问题仍未得到解答?
+   - 哪些数据或方法可以回应这些问题?
+   - 哪些发现相互冲突?
+
+5. **提取引文**:以 BibTeX 格式提取所有讨论论文的引文。
+
+6. **保存报告**至 `quality_reports/lit_review_[sanitized_topic].md`
+
+---
+
+## 输出格式
 
 ```markdown
 # Literature Review: [Topic]
@@ -92,9 +92,9 @@ Conduct a structured literature search and synthesis on the given topic.
 
 ---
 
-## Important
+## 重要事项
 
-- **Be honest about uncertainty.** If you cannot verify a citation, say so.
-- **Prioritize recent work** (last 5-10 years) unless seminal papers are older.
-- **Note working papers vs published papers** — working papers may change.
-- **Do NOT fabricate citations.** If you're unsure about a paper's details, flag it for the user to verify.
+- **坦诚面对不确定性。** 如果无法核实某条引文,请如实说明。
+- **优先关注近期工作**(过去 5-10 年),除非经典论文年代更早。
+- **注明工作论文与已发表论文的区别** —— 工作论文可能发生变化。
+- **不要编造引文。** 如果对某篇论文的细节不确定,请标记出来供用户核实。

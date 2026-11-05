@@ -1,126 +1,126 @@
 ---
 name: deep-audit
 description: |
-  Deep consistency audit of the entire repository infrastructure.
-  Launches 4 parallel specialist agents to find factual errors, code bugs,
-  count mismatches, and cross-document inconsistencies. Then fixes all issues
-  and loops until clean.
-  Use when: after making broad changes, before releases, or when user says
-  "audit", "find inconsistencies", "check everything".
+  对整个仓库基础设施进行深度一致性审计。
+  启动 4 个并行专家代理,查找事实错误、代码缺陷、
+  计数不匹配以及跨文档不一致。随后修复所有问题,
+  并循环直至干净。
+  使用时机:在进行广泛改动之后、发布之前,或用户说
+  "audit"、"find inconsistencies"、"check everything" 时。
 author: Claude Code Academic Workflow
 version: 1.0.0
 allowed-tools: ["Read", "Write", "Edit", "Bash", "Glob", "Grep", "Task"]
 ---
 
-# /deep-audit — Repository Infrastructure Audit
+# /deep-audit —— 仓库基础设施审计
 
-Run a comprehensive consistency audit across the entire repository, fix all issues found, and loop until clean.
+对整个仓库执行全面的一致性审计,修复所有发现的问题,并循环直至干净。
 
-## When to Use
+## 何时使用
 
-- After broad changes (new skills, rules, hooks, guide edits)
-- Before releases or major commits
-- When the user asks to "find inconsistencies", "audit", or "check everything"
+- 在广泛改动之后(新增技能、规则、钩子、指南编辑)
+- 在发布或重要提交之前
+- 当用户要求 "find inconsistencies"、"audit" 或 "check everything" 时
 
-## Workflow
+## 工作流
 
-### PHASE 1: Launch 4 Parallel Audit Agents
+### 阶段 1:启动 4 个并行审计代理
 
-Launch these 4 agents simultaneously using `Task` with `subagent_type=general-purpose`:
+使用 `Task` 并设置 `subagent_type=general-purpose`,同时启动以下 4 个代理:
 
-#### Agent 1: Guide Content Accuracy
-Focus: `guide/workflow-guide.qmd`
-- All numeric claims match reality (skill count, agent count, rule count, hook count)
-- All file paths mentioned actually exist on disk
-- All skill/agent/rule names match actual directory names
-- Code examples are syntactically correct
-- Cross-references and anchors resolve
-- No stale counts from previous versions
+#### 代理 1:指南内容准确性
+重点关注:`guide/workflow-guide.qmd`
+- 所有数值陈述与现实一致(技能数、代理数、规则数、钩子数)
+- 提到的所有文件路径确实存在于磁盘上
+- 所有技能/代理/规则名称与实际目录名一致
+- 代码示例语法正确
+- 交叉引用与锚点可解析
+- 没有来自旧版本的过时计数
 
-#### Agent 2: Hook Code Quality
-Focus: `.claude/hooks/*.py` and `.claude/hooks/*.sh`
-- No remaining `/tmp/` usage (should use `~/.claude/sessions/`)
-- Hash length consistency (`[:8]` across all hooks)
-- Proper error handling (fail-open pattern: top-level `try/except` with `sys.exit(0)`)
-- JSON input/output correctness (stdin for input, stdout/stderr for output)
-- Exit code correctness (0 for non-blocking, non-zero only when intentionally blocking)
-- `from __future__ import annotations` for Python 3.8+ compatibility
-- Correct field names from hook input schema (`source` not `type` for SessionStart)
-- PreCompact hooks print to stderr (stdout is ignored)
+#### 代理 2:钩子代码质量
+重点关注:`.claude/hooks/*.py` 与 `.claude/hooks/*.sh`
+- 不再使用 `/tmp/`(应使用 `~/.claude/sessions/`)
+- 哈希长度一致(所有钩子均为 `[:8]`)
+- 正确的错误处理(fail-open 模式:顶层 `try/except` 配合 `sys.exit(0)`)
+- JSON 输入/输出正确(输入用 stdin,输出用 stdout/stderr)
+- 退出码正确(非阻塞用 0,仅在有意阻塞时用非零)
+- 使用 `from __future__ import annotations` 以兼容 Python 3.8+
+- 钩子输入 schema 的字段名正确(SessionStart 用 `source` 而非 `type`)
+- PreCompact 钩子向 stderr 打印(stdout 会被忽略)
 
-#### Agent 3: Skills and Rules Consistency
-Focus: `.claude/skills/*/SKILL.md` and `.claude/rules/*.md`
-- Valid YAML frontmatter in all files
-- No stale `disable-model-invocation: true`
-- `allowed-tools` values are sensible
-- Rule `paths:` reference existing directories
-- No contradictions between rules
-- CLAUDE.md skills table matches actual skill directories 1:1
-- All templates referenced in rules/guide exist in `templates/`
+#### 代理 3:技能与规则一致性
+重点关注:`.claude/skills/*/SKILL.md` 与 `.claude/rules/*.md`
+- 所有文件具有有效的 YAML frontmatter
+- 没有过时的 `disable-model-invocation: true`
+- `allowed-tools` 取值合理
+- 规则的 `paths:` 引用存在的目录
+- 规则之间没有矛盾
+- CLAUDE.md 中的技能表与实际技能目录一一对应
+- 规则/指南中引用的所有模板都存在于 `templates/`
 
-#### Agent 4: Cross-Document Consistency
-Focus: `README.md`, `docs/index.html`, `docs/workflow-guide.html`
-- All feature counts agree across all 3 documents
-- All links point to valid targets
-- License section matches LICENSE file
-- Directory tree matches actual structure
-- No stale counts from previous versions
+#### 代理 4:跨文档一致性
+重点关注:`README.md`、`docs/index.html`、`docs/workflow-guide.html`
+- 三份文档中的所有功能计数一致
+- 所有链接指向有效目标
+- 许可证部分与 LICENSE 文件一致
+- 目录树与实际结构匹配
+- 没有来自旧版本的过时计数
 
-### PHASE 2: Triage Findings
+### 阶段 2:分类发现
 
-Categorize each finding:
-- **Genuine bug**: Fix immediately
-- **False alarm**: Discard (document WHY it's false for future rounds)
+对每个发现分类:
+- **真实缺陷**:立即修复
+- **误报**:丢弃(记录误报原因,供后续轮次参考)
 
-Common false alarms to watch for:
-- Quarto callout `## Title` inside `:::` divs — this is standard syntax, NOT a heading bug
-- `allowed-tools` linter warning — known linter bug (Claude Code issue #25380), field IS valid
-- Counts in old session logs — these are historical records, not user-facing docs
+需注意的常见误报:
+- `:::` div 中的 Quarto callout `## Title` —— 这是标准语法,不是标题错误
+- `allowed-tools` linter 警告 —— 已知 linter 缺陷(Claude Code issue #25380),该字段是有效的
+- 旧会话日志中的计数 —— 这些是历史记录,并非面向用户的文档
 
-### PHASE 3: Fix All Issues
+### 阶段 3:修复所有问题
 
-Apply fixes in parallel where possible. For each fix:
-1. Read the file first (required by Edit tool)
-2. Apply the fix
-3. Verify the fix (grep for stale values, check syntax)
+尽可能并行应用修复。对每项修复:
+1. 先读取文件(Edit 工具要求)
+2. 应用修复
+3. 验证修复(用 grep 查找过时值,检查语法)
 
-### PHASE 4: Re-render if Guide Changed
+### 阶段 4:若指南有改动则重新渲染
 
-If `guide/workflow-guide.qmd` was modified:
+如果 `guide/workflow-guide.qmd` 被修改:
 ```bash
 quarto render guide/workflow-guide.qmd
 cp guide/workflow-guide.html docs/workflow-guide.html
 ```
 
-### PHASE 5: Loop or Declare Clean
+### 阶段 5:循环或宣布干净
 
-After fixing, launch a fresh set of 4 agents to verify.
-- If new issues found → fix and loop again
-- If zero genuine issues → declare clean and report summary
+修复后,启动一组全新的 4 个代理进行验证。
+- 若发现新问题 → 修复并再次循环
+- 若没有真实问题 → 宣布干净并汇报摘要
 
-**Max loops: 5** (to prevent infinite cycling)
+**最多循环:5 次**(防止无限循环)
 
-## Key Lessons from Past Audits
+## 以往审计的关键教训
 
-These are real bugs found across 7 rounds — check for these specifically:
+以下是 7 轮审计中发现的真实缺陷 —— 请特别检查这些:
 
-| Bug Pattern | Where to Check | What Went Wrong |
+| 缺陷模式 | 检查位置 | 出了什么问题 |
 |-------------|---------------|-----------------|
-| Stale counts ("19 skills" → "21") | Guide, README, landing page | Added skills but didn't update all mentions |
-| Hook exit codes | All Python hooks | Exit 2 in PreCompact silently discards stdout |
-| Hook field names | post-compact-restore.py | SessionStart uses `source`, not `type` |
-| State in /tmp/ | All Python hooks | Should use `~/.claude/sessions/<hash>/` |
-| Hash length mismatch | All Python hooks | Some used `[:12]`, others `[:8]` |
-| Missing fail-open | Python hooks `__main__` | Unhandled exception → exit 1 → confusing behavior |
-| Python 3.10+ syntax | Type hints like `dict | None` | Need `from __future__ import annotations` |
-| Missing directories | quality_reports/specs/ | Referenced in rules but never created |
-| Always-on rule listing | Guide + README | meta-governance omitted from listings |
-| macOS-only commands | Skills, rules | `open` without `xdg-open` fallback |
-| Protected file blocking | settings.json edits | protect-files.sh blocks Edit/Write |
+| 过时计数("19 skills" → "21") | 指南、README、落地页 | 新增了技能但未更新所有提及之处 |
+| 钩子退出码 | 所有 Python 钩子 | PreCompact 中退出码 2 会静默丢弃 stdout |
+| 钩子字段名 | post-compact-restore.py | SessionStart 使用 `source`,而非 `type` |
+| 状态存于 /tmp/ | 所有 Python 钩子 | 应使用 `~/.claude/sessions/<hash>/` |
+| 哈希长度不一致 | 所有 Python 钩子 | 有些用 `[:12]`,另一些用 `[:8]` |
+| 缺少 fail-open | Python 钩子的 `__main__` | 未处理的异常 → 退出码 1 → 行为混乱 |
+| Python 3.10+ 语法 | 形如 `dict | None` 的类型提示 | 需要 `from __future__ import annotations` |
+| 缺少目录 | quality_reports/specs/ | 规则中被引用但从未创建 |
+| 常驻规则列表 | 指南 + README | meta-governance 未列入清单 |
+| 仅 macOS 命令 | 技能、规则 | 使用 `open` 而无 `xdg-open` 回退 |
+| 受保护文件阻断 | settings.json 编辑 | protect-files.sh 阻止 Edit/Write |
 
-## Output Format
+## 输出格式
 
-After each round, report:
+每轮结束后汇报:
 
 ```
 ## Round N Audit Results

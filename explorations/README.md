@@ -19,9 +19,11 @@ This folder is a **sandbox** for experimental and exploratory work. All new idea
 explorations/
 ├── [active-project]/       # Work in progress
 │   ├── README.md           # Goal, hypotheses, status
-│   ├── R/                  # Experimental code
-│   ├── scripts/            # Test scripts
-│   └── output/             # Results
+│   ├── code/               # Experimental code
+│   │   ├── python/         # Python experiments
+│   │   └── do/             # Stata do files
+│   ├── output/             # Results
+│   └── SESSION_LOG.md      # Progress notes
 └── ARCHIVE/                # Completed or abandoned
     ├── completed_[name]/   # Graduated to production
     └── abandoned_[name]/   # Documented why stopped

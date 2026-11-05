@@ -1,51 +1,49 @@
 ---
 name: context-status
 description: |
-  Show current context status and session health.
-  Use to check how much context has been used, whether auto-compact is
-  approaching, and what state will be preserved.
+  显示当前上下文状态与会话健康度。
+  用于检查已使用多少上下文、自动压缩是否临近,以及哪些状态会被保留。
 author: Claude Code Academic Workflow
 version: 1.0.0
 allowed-tools: ["Read", "Bash", "Glob"]
 ---
 
-# /context-status — Check Session Health
+# /context-status —— 检查会话健康度
 
-Show the current session status including context usage estimate, active plan,
-and preservation state.
+显示当前会话状态,包括上下文使用估计、活动计划与保留状态。
 
-## What This Skill Shows
+## 本技能显示的内容
 
-1. **Context usage estimate** — Approximate % of context window used
-2. **Active plan** — Current plan file and status
-3. **Session log** — Most recent session log
-4. **Preservation state** — What will survive compaction
+1. **上下文使用估计** —— 上下文窗口已用百分比的大致估计
+2. **活动计划** —— 当前计划文件及状态
+3. **会话日志** —— 最近的会话日志
+4. **保留状态** —— 压缩后仍会保留的内容
 
-## Workflow
+## 工作流
 
-### Step 1: Check Context Monitor Cache
+### 步骤 1:检查上下文监视器缓存
 
-Read the context monitor cache to get the current estimate:
+读取上下文监视器缓存以获得当前估计:
 
 ```bash
 cat ~/.claude/sessions/*/context-monitor-cache.json 2>/dev/null | head -20
 ```
 
-### Step 2: Find Active Plan
+### 步骤 2:查找活动计划
 
 ```bash
 ls -lt quality_reports/plans/*.md 2>/dev/null | head -3
 ```
 
-### Step 3: Find Session Log
+### 步骤 3:查找会话日志
 
 ```bash
 ls -lt quality_reports/session_logs/*.md 2>/dev/null | head -1
 ```
 
-### Step 4: Report Status
+### 步骤 4:报告状态
 
-Format the output:
+格式化输出:
 
 ```
 📊 Session Status
@@ -67,8 +65,8 @@ File:   quality_reports/session_logs/YYYY-MM-DD_description.md
   • Session state will be saved before compaction
 ```
 
-## Notes
+## 说明
 
-- Context % is an estimate based on tool call count
-- Actual compaction is triggered by Claude Code automatically
-- All important state is saved to disk (plans, logs, MEMORY.md)
+- 上下文百分比是基于工具调用次数的估计
+- 实际压缩由 Claude Code 自动触发
+- 所有重要状态都会保存到磁盘(计划、日志、MEMORY.md)

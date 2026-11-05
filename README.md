@@ -1,6 +1,18 @@
 # My Claude Code Setup
 
-> **Work in progress.** This is not meant to be a polished guide for everyone. It's mostly a summary of how I've been using Claude Code for academic work — slides, papers, data analysis, and more. I keep learning new things, and as I do, I keep updating these files. This is just a way for me to share what I've figured out with friends and colleagues.
+---
+
+## 本项目(Working Project)
+
+> **研究项目:** 公共数据开放对边界地区环境污染治理的影响(The Impact of Public Data Openness on Environmental Pollution Governance in Border Regions)
+> **机构:** 南通大学商学院
+> **工具链:** Python(Anaconda,数据清洗/制图)+ Stata(StataNow 19.5 MP,主回归);论文英文撰写,LaTeX 经 Overleaf 编译(仓库为主)
+> **与模板的差异:** 本仓库是 `pedrohcgs/claude-code-my-workflow` 的工作 fork——论文优先(非幻灯片),Python+Stata(非 R),配置与过程文档中文,直接提交 main(无 PR)。`.claude/` 内幻灯片/Quarto/R 类规则、代理与技能作为模板资产保留但已停用。
+> 工作流说明见 `CLAUDE.md` 与 `.claude/WORKFLOW_QUICK_REF.md`。
+
+---
+
+> **以下为上游模板说明(Work in progress)。** This is not meant to be a polished guide for everyone. It's mostly a summary of how I've been using Claude Code for academic work — slides, papers, data analysis, and more. I keep learning new things, and as I do, I keep updating these files. This is just a way for me to share what I've figured out with friends and colleagues.
 
 **Live site:** [psantanna.com/claude-code-my-workflow](https://psantanna.com/claude-code-my-workflow/)
 **Last Updated:** 2026-03-20

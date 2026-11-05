@@ -1,42 +1,40 @@
 ---
 paths:
-  - "scripts/**/*.R"
+  - "code/**"
   - "explorations/**"
-  - "Figures/**/*.R"
 ---
 
-# Research Project Orchestrator (Simplified)
+# 研究项目编排器(简化版)
 
-**For R scripts, simulations, and data analysis** -- use this simplified loop instead of the full multi-agent orchestrator.
+**适用于数据清洗、回归分析、模拟等代码工作** — 用此简化循环替代全量多代理编排。
 
-## The Simple Loop
+## 简化循环
 
 ```
-Plan approved → orchestrator activates
+计划批准 → 编排器启动
   │
-  Step 1: IMPLEMENT — Execute plan steps
+  第 1 步:实施 — 执行计划步骤
   │
-  Step 2: VERIFY — Run code, check outputs
-  │         R scripts: Rscript runs without error
-  │         Simulations: set.seed reproducibility
-  │         Plots: PDF/PNG created, correct format
-  │         If verification fails → fix → re-verify
+  第 2 步:验证 — 运行代码,检查输出
+  │         Python:python3 运行无错误、输出文件非零字节
+  │         Stata:log 无 r(错误)、e(N)/assert 通过、表格导出
+  │         验证失败 → 修复 → 再验证
   │
-  Step 3: SCORE — Apply quality-gates rubric
+  第 3 步:评分 — 按 quality-gates 评分表
   │
-  └── Score >= 80?
-        YES → Done (commit when user signals)
-        NO  → Fix blocking issues, re-verify, re-score
+  └── 分数 >= 80?
+        YES → 完成(用户示意后提交)
+        NO  → 修复阻塞项,再验证,再评分
 ```
 
-**No 5-round loops. No multi-agent reviews. Just: write, test, done.**
+**无 5 轮循环。无多代理评审。只是:写、测、完成。**
 
-## Verification Checklist
+## 验证清单
 
-- [ ] Script runs without errors
-- [ ] All packages loaded at top
-- [ ] No hardcoded absolute paths
-- [ ] `set.seed()` once at top if stochastic
-- [ ] Output files created at expected paths
-- [ ] Tolerance checks pass (if applicable)
-- [ ] Quality score >= 80
+- [ ] Python 脚本运行无错误
+- [ ] Stata log 无 r(错误)
+- [ ] 无硬编码绝对路径(头部路径块除外)
+- [ ] 随机成分有 seed
+- [ ] 输出文件在预期路径生成
+- [ ] 容差对账通过(如适用)
+- [ ] 质量分 >= 80

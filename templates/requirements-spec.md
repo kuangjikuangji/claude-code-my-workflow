@@ -1,56 +1,56 @@
-# Requirements Specification: [Title]
+# 需求规格书:[标题]
 
-**Date:** [YYYY-MM-DD]
-**Status:** DRAFT | APPROVED
-
----
-
-## Objective
-
-[One sentence: what success looks like]
+**日期:** [YYYY-MM-DD]
+**状态:** DRAFT | APPROVED
 
 ---
 
-## Requirements
+## 目标
 
-### MUST Have (Non-Negotiable)
-
-- [ ] [Required feature or constraint]
-- [ ] [Required feature or constraint]
-
-### SHOULD Have (Preferred)
-
-- [ ] [Preferred feature or enhancement]
-- [ ] [Preferred feature or enhancement]
-
-### MAY Have (Optional, If Time)
-
-- [ ] [Nice-to-have enhancement]
-- [ ] [Nice-to-have enhancement]
+[一句话:成功是什么样子]
 
 ---
 
-## Clarity Status
+## 需求
 
-| Aspect | Status | Notes |
-|--------|--------|-------|
-| [Ambiguous aspect] | CLEAR / ASSUMED / BLOCKED | [How it was resolved or why it's assumed] |
-| [Another aspect] | CLEAR / ASSUMED / BLOCKED | [Explanation] |
+### MUST(不可谈判)
 
-**Status Definitions:**
-- **CLEAR:** Fully specified, no ambiguity
-- **ASSUMED:** Reasonable assumption made in absence of clarity; user can override
-- **BLOCKED:** Cannot proceed until this is answered
+- [ ] [必需的功能或约束]
+- [ ] [必需的功能或约束]
 
----
+### SHOULD(偏好)
 
-## Success Criteria
+- [ ] [偏好的功能或增强]
+- [ ] [偏好的功能或增强]
 
-- [Measurable criterion for completion]
-- [Measurable criterion for completion]
+### MAY(可选,时间允许再做)
+
+- [ ] [锦上添花的增强]
+- [ ] [锦上添花的增强]
 
 ---
 
-## Approval
+## 清晰度状态
 
-[ ] User approved: [Date]
+| 方面 | 状态 | 说明 |
+|------|------|------|
+| [模糊点] | CLEAR / ASSUMED / BLOCKED | [如何解决或为何假设] |
+| [另一模糊点] | CLEAR / ASSUMED / BLOCKED | [说明] |
+
+**状态定义:**
+- **CLEAR:** 完全明确,无歧义
+- **ASSUMED:** 缺乏明确性时的合理假设;用户可推翻
+- **BLOCKED:** 未回答前无法继续
+
+---
+
+## 成功标准
+
+- [可度量的完成标准]
+- [可度量的完成标准]
+
+---
+
+## 批准
+
+[ ] 用户批准:[日期]

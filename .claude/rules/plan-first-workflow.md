@@ -1,83 +1,83 @@
-# Plan-First Workflow
+# 先计划后执行工作流
 
-**For any non-trivial task, enter plan mode before writing code.**
+**任何非平凡任务,写代码前先进入计划模式。**
 
-## The Protocol
+## 协议
 
-1. **Enter Plan Mode** — use `EnterPlanMode`
-2. **Check MEMORY.md** — read any `[LEARN]` entries relevant to this task
-3. **Requirements Specification (for complex/ambiguous tasks)** — see below
-4. **Draft the plan** — what changes, which files, in what order
-5. **Save to disk** — write to `quality_reports/plans/YYYY-MM-DD_short-description.md`
-6. **Present to user** — wait for approval
-7. **Exit plan mode** — only after approval
-8. **Save initial session log** — capture goal and key context while fresh
-9. **Implement via orchestrator** — see `orchestrator-protocol.md`
+1. **进入计划模式** — 用 `EnterPlanMode`
+2. **查 MEMORY.md** — 读与本任务相关的 `[LEARN]` 条目
+3. **需求规格书(复杂/模糊任务)** — 见下文
+4. **起草计划** — 改什么、哪些文件、什么顺序
+5. **落盘** — 写至 `quality_reports/plans/YYYY-MM-DD_简述.md`
+6. **提交用户** — 等待批准
+7. **退出计划模式** — 仅在批准后
+8. **写初始会话日志** — 趁新鲜记录目标与关键上下文
+9. **按编排器实施** — 见 `orchestrator-protocol.md`
 
-## Step 3: Requirements Specification (For Complex/Ambiguous Tasks)
+## 第 3 步:需求规格书(复杂/模糊任务用)
 
-**When to use:**
-- Task is high-level or vague ("improve the lecture", "analyze the data")
-- Multiple valid interpretations exist
-- Significant effort required (>1 hour or >3 files)
+**何时用:**
+- 任务高层或模糊(「改进分析」「处理数据」)
+- 存在多种合理解释
+- 工作量大(>1 小时或 >3 个文件)
 
-**When to skip:**
-- Task is clear and specific ("fix typo in line 42")
-- Simple single-file edit
-- User has already provided detailed requirements
+**何时跳过:**
+- 任务清晰具体(「修第 42 行笔误」)
+- 简单单文件编辑
+- 用户已给出详细需求
 
-**Protocol:**
-1. Use AskUserQuestion to clarify ambiguities (max 3-5 questions)
-2. Create `quality_reports/specs/YYYY-MM-DD_description.md` using `templates/requirements-spec.md`
-3. Mark each requirement:
-   - **MUST** (non-negotiable)
-   - **SHOULD** (preferred)
-   - **MAY** (optional)
-4. Declare clarity status for each major aspect:
-   - **CLEAR:** Fully specified
-   - **ASSUMED:** Reasonable assumption (user can override)
-   - **BLOCKED:** Cannot proceed until answered
-5. Get user approval on spec
-6. THEN proceed to Step 4 (draft the plan) with spec as input
+**协议:**
+1. 用 AskUserQuestion 澄清歧义(最多 3-5 个问题)
+2. 用 `templates/requirements-spec.md` 创建 `quality_reports/specs/YYYY-MM-DD_描述.md`
+3. 标注每条需求:
+   - **MUST**(不可谈判)
+   - **SHOULD**(偏好)
+   - **MAY**(可选)
+4. 声明主要方面的清晰度状态:
+   - **CLEAR:** 完全明确
+   - **ASSUMED:** 合理假设(用户可推翻)
+   - **BLOCKED:** 未回答前无法继续
+5. 取得用户对规格书的批准
+6. **然后**进入第 4 步(以规格书为输入起草计划)
 
-**Template:** `templates/requirements-spec.md`
+**模板:** `templates/requirements-spec.md`
 
-**Why this helps:** Catches ambiguity BEFORE planning. Reduces mid-plan pivots by 30-50%.
+**为什么有效:** 歧义在计划前被抓住,减少 30-50% 的中途转向。
 
-## Plans on Disk
+## 计划落盘
 
-Plans survive context compression. Save every plan to:
+计划必须存活过上下文压缩。每个计划都存至:
 
 ```
-quality_reports/plans/YYYY-MM-DD_short-description.md
+quality_reports/plans/YYYY-MM-DD_简述.md
 ```
 
-Format: Status (DRAFT/APPROVED/COMPLETED), approach, files to modify, verification steps.
+格式:Status(DRAFT/APPROVED/COMPLETED)、方案、要改的文件、验证步骤。
 
-## Context Management
+## 上下文管理
 
-### General Principles
-- Prefer auto-compression over `/clear`
-- Save important context to disk before it's lost
-- `/clear` only when context is genuinely polluted
+### 一般原则
+- 优先自动压缩,少用 `/clear`
+- 重要上下文在丢失前落盘
+- `/clear` 仅在上下文确实被污染时用
 
-### Context Survival Strategy
+### 上下文生存策略
 
-**Before Auto-Compression:**
-When approaching context limits, ensure:
-1. MEMORY.md has all `[LEARN]` entries from this session
-2. Session log is current (updated within 10 minutes)
-3. Active plan is saved to disk
-4. Open questions are documented in session log
+**自动压缩前:**
+接近上下文上限时,确保:
+1. MEMORY.md 已含本会话全部 `[LEARN]` 条目
+2. 会话日志是最新的(10 分钟以内)
+3. 活动计划已落盘
+4. 开放问题已记入会话日志
 
-The pre-compact hook will remind you of this checklist.
+pre-compact 钩子会提醒此清单。
 
-**After Compression:**
-First message should be: "Resuming after compression. Last task: [read most recent plan + git log]. Status: [next step]."
+**压缩后:**
+第一条消息应为:「压缩后恢复。上次任务:[读最近计划 + git log]。状态:[下一步]。」
 
-## Session Recovery
+## 会话恢复
 
-After compression or new session:
-1. Read `CLAUDE.md` + most recent plan in `quality_reports/plans/`
-2. Check `git log --oneline -10` and `git diff`
-3. State what you understand the current task to be
+压缩后或新会话:
+1. 读 `CLAUDE.md` + `quality_reports/plans/` 中最近计划
+2. 查 `git log --oneline -10` 与 `git diff`
+3. 陈述你所理解的任务

@@ -30,9 +30,11 @@ NC = "\033[0m"  # No color
 
 # Files that need verification
 VERIFY_EXTENSIONS = {
-    ".tex": "compile with /compile-latex",
+    ".tex": "structure check (no local TeX; compile on Overleaf)",
     ".qmd": "render with quarto render",
-    ".R": "run to verify output"
+    ".R": "run to verify output",
+    ".py": "run to verify output (python3 code/python/...)",
+    ".do": "run via /run-stata (StataMP -b) and check the .log"
 }
 
 # Files to skip

@@ -1,131 +1,103 @@
 ---
 name: data-analysis
-description: End-to-end R data analysis workflow from exploration through regression to publication-ready tables and figures
-argument-hint: "[dataset path or description of analysis goal]"
+description: Python + Stata 端到端数据分析流程:清洗 → EDA → Stata 主回归 → 出版级表格与图
+argument-hint: "[数据路径或分析目标描述]"
 allowed-tools: ["Read", "Grep", "Glob", "Write", "Edit", "Bash", "Task"]
 ---
 
-# Data Analysis Workflow
+# 数据分析工作流(Python + Stata)
 
-Run an end-to-end data analysis in R: load, explore, analyze, and produce publication-ready output.
+端到端分析:Python 清洗与探索 → Stata 主回归 → 出版级输出。
 
-**Input:** `$ARGUMENTS` — a dataset path (e.g., `data/county_panel.csv`) or a description of the analysis goal (e.g., "regress wages on education with state fixed effects using CPS data").
-
----
-
-## Constraints
-
-- **Follow R code conventions** in `.claude/rules/r-code-conventions.md`
-- **Save all scripts** to `scripts/R/` with descriptive names
-- **Save all outputs** (figures, tables, RDS) to `output/`
-- **Use `saveRDS()`** for every computed object — Quarto slides may need them
-- **Use project theme** for all figures (check for custom theme in `.claude/rules/`)
-- **Run r-reviewer** on the generated script before presenting results
+**输入:** `$ARGUMENTS` — 数据路径(如 `data/raw/pollution.csv`)或分析目标描述(如「城市日度污染面板对公共数据开放上线的 DID」)。
 
 ---
 
-## Workflow Phases
+## 约束
 
-### Phase 1: Setup and Data Loading
+- **先读** `.claude/rules/data-provenance.md` 与知识库 `.claude/rules/knowledge-base-template.md`(变量口径、识别设定)
+- 清洗脚本存 `code/python/00_clean_*.py`,遵循 `.claude/rules/python-code-conventions.md`
+- 回归脚本存 `code/stata/*.do`,遵循 `.claude/rules/stata-code-conventions.md`
+- 输出:表 → `tables/`;图 → `Figures/`;加工数据 → `data/processed/`
+- **raw 只读**;结果数字可溯源(SSOT 铁律)
+- 完成后跑 code-reviewer 评审生成的脚本
 
-1. Read `.claude/rules/r-code-conventions.md` for project standards
-2. Create R script with proper header (title, author, purpose, inputs, outputs)
-3. Load required packages at top (`library()`, never `require()`)
-4. Set seed once at top: `set.seed(42)`
-5. Load and inspect the dataset
+---
 
-### Phase 2: Exploratory Data Analysis
+## 工作流阶段
 
-Generate diagnostic outputs:
-- **Summary statistics:** `summary()`, missingness rates, variable types
-- **Distributions:** Histograms for key continuous variables
-- **Relationships:** Scatter plots, correlation matrices
-- **Time patterns:** If panel data, plot trends over time
-- **Group comparisons:** If treatment/control, compare pre-treatment means
+### 阶段 1:设定与数据加载(Python)
 
-Save all diagnostic figures to `output/diagnostics/`.
+1. 读知识库确认变量口径与识别设定
+2. 写清洗脚本:`data/raw/*` → `data/processed/*.dta`,文件头 docstring 齐全
+3. 幂等;每次 merge 后检查 `_merge`/命中率
+4. 更新 `data/documentation/data_dictionary.md`
 
-### Phase 3: Main Analysis
+### 阶段 2:探索性分析(Python,图输出)
 
-Based on the research question:
-- **Regression analysis:** Use `fixest` for panel data, `lm`/`glm` for cross-section
-- **Standard errors:** Cluster at the appropriate level (document why)
-- **Multiple specifications:** Start simple, progressively add controls
-- **Effect sizes:** Report standardized effects alongside raw coefficients
+- **描述统计:** 缺失率、变量类型、分布
+- **趋势:** 面板数据画时间趋势
+- **组间对比:** 处理/对照的处理前均值
+- **平衡性:** 处理前组间协变量差异
+- 图存 `Figures/`(PNG+PDF 双输出)
 
-### Phase 4: Publication-Ready Output
+### 阶段 3:主回归(Stata)
 
-**Tables:**
-- Use `modelsummary` for regression tables (preferred) or `stargazer`
-- Include all standard elements: coefficients, SEs, significance stars, N, R-squared
-- Export as `.tex` for LaTeX inclusion and `.html` for quick viewing
+- do 文件头部完整(version 19.5、路径块、seed 如需)
+- 基准 DID → 加控制 → 异质性(四分组 × 距离带)
+- 标准误:城市层级聚类(默认,与识别层级一致);变更须注明
+- 事件研究/平行趋势必做
+- 关键回归后 `e(N)`/`assert` 检查
+- 运行:`cd code/stata && /Applications/StataNow/StataMP.app/Contents/MacOS/StataMP -b do <file>.do`
 
-**Figures:**
-- Use `ggplot2` with project theme
-- Set `bg = "transparent"` for Beamer compatibility
-- Include proper axis labels (sentence case, units)
-- Export with explicit dimensions: `ggsave(width = X, height = Y)`
-- Save as both `.pdf` and `.png`
+### 阶段 4:出版级输出(Stata)
 
-### Phase 5: Save and Review
+**表:** `esttab` 导出 `tables/*.tex`(booktabs、系数/SE/星号/N、notes 注明 SE 与聚类)
+**图:** Python 按图标准产出(PNG 300 DPI + PDF、Okabe-Ito/viridis、英文标签)
 
-1. `saveRDS()` for all key objects (regression results, summary tables, processed data)
-2. Create `output/` subdirectories as needed with `dir.create(..., recursive = TRUE)`
-3. Run the r-reviewer agent on the generated script:
+### 阶段 5:保存与评审
+
+1. 验证:`code/stata/*.log` 无 `r(` 错误;`e(N)` 正确(见 verification-protocol)
+2. 跑 code-reviewer 评审生成的脚本:
 
 ```
-Delegate to the r-reviewer agent:
-"Review the script at scripts/R/[script_name].R"
+委派 code-reviewer 代理:
+"评审 code/python/[script].py 与 code/stata/[script].do"
 ```
 
-4. Address any Critical or High issues from the review.
+3. 修复 CRITICAL/MAJOR 问题后复评
 
 ---
 
-## Script Structure
+## 脚本结构模板
 
-Follow this template:
-
-```r
+```python
 # ============================================================
-# [Descriptive Title]
-# Author: [from project context]
-# Purpose: [What this script does]
-# Inputs: [Data files]
-# Outputs: [Figures, tables, RDS files]
+# 00_clean_pollution.py
+# Purpose: raw pollution CSV -> processed city-day panel (dta)
+# Inputs:  data/raw/<file>.csv
+# Outputs: data/processed/pollution_cityday_v1.dta
 # ============================================================
+```
 
-# 0. Setup ----
-library(tidyverse)
-library(fixest)
-library(modelsummary)
-
-set.seed(42)
-
-dir.create("output/analysis", recursive = TRUE, showWarnings = FALSE)
-
-# 1. Data Loading ----
-# [Load and clean data]
-
-# 2. Exploratory Analysis ----
-# [Summary stats, diagnostic plots]
-
-# 3. Main Analysis ----
-# [Regressions, estimation]
-
-# 4. Tables and Figures ----
-# [Publication-ready output]
-
-# 5. Export ----
-# [saveRDS for all objects, ggsave for all figures]
+```stata
+* ============================================================
+* 01_main_did.do
+* Inputs: $root/data/processed/*.dta
+* Outputs: $root/tables/main_did.tex
+* ============================================================
+version 19.5
+clear all
+cd "/Users/zhoujingjing/my-project/code/stata"
+global root "/Users/zhoujingjing/my-project"
 ```
 
 ---
 
-## Important
+## 重要
 
-- **Reproduce, don't guess.** If the user specifies a regression, run exactly that.
-- **Show your work.** Print summary statistics before jumping to regression.
-- **Check for issues.** Look for multicollinearity, outliers, perfect prediction.
-- **Use relative paths.** All paths relative to repository root.
-- **No hardcoded values.** Use variables for sample restrictions, date ranges, etc.
+- **先复制,后扩展。** 复刻目标数字有复制协议(`replication-protocol.md`)
+- **展示过程。** 回归前先出描述统计
+- **查问题。** 共线性、异常值、完美预测、静默丢样本
+- **相对路径。** 经 `$root` / ROOT 解析;绝对路径仅限头部块
+- **无魔数。** 样本限制、窗口、距离带切点用头部宏/常量

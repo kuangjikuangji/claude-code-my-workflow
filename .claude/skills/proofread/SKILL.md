@@ -1,42 +1,42 @@
 ---
 name: proofread
-description: Run the proofreading protocol on lecture files. Checks grammar, typos, overflow, consistency, and academic writing quality. Produces a report without editing files.
-argument-hint: "[filename or 'all']"
+description: 对论文 .tex 运行校对协议。检查语法、拼写、布局风险、一致性、学术写作质量。只出报告不改文件。
+argument-hint: "[文件名或 'all']"
 allowed-tools: ["Read", "Grep", "Glob", "Write", "Task"]
 ---
 
-# Proofread Lecture Files
+# 论文校对
 
-Run the mandatory proofreading protocol on lecture files. This produces a report of all issues found WITHOUT editing any source files.
+对论文文件运行必执行的校对协议(`.claude/rules/proofreading-protocol.md`)。**只出报告,不编辑任何源文件。** 修复在用户批准后另行应用。
 
-## Steps
+## 步骤
 
-1. **Identify files to review:**
-   - If `$ARGUMENTS` is a specific filename: review that file only
-   - If `$ARGUMENTS` is "all": review all lecture files in `Slides/` and `Quarto/`
+1. **确定校对对象:**
+   - `$ARGUMENTS` 为具体文件名:只校对该文件
+   - `$ARGUMENTS` 为 "all":校对 `paper/` 下所有 `.tex`
 
-2. **For each file, launch the proofreader agent** that checks for:
+2. **对每个文件启动 proofreader 代理**,检查:
 
-   **GRAMMAR:** Subject-verb agreement, articles (a/an/the), prepositions, tense consistency
-   **TYPOS:** Misspellings, search-and-replace artifacts, duplicated words
-   **OVERFLOW:** Overfull hbox (LaTeX), content exceeding slide boundaries (Quarto)
-   **CONSISTENCY:** Citation format, notation, terminology
-   **ACADEMIC QUALITY:** Informal language, missing words, awkward constructions
+   **语法:** 主谓一致、冠词、介词、时态
+   **拼写:** 错拼、替换损坏、重复词
+   **布局风险:** 表格超宽、长公式拆分建议(本机无编译,最终以 Overleaf 为准)
+   **一致性:** 引用格式、符号、术语、数字格式
+   **学术质量:** 非正式缩写、缺词、拗口表达、无引用的论断
+   **数字对账:** 正文数字可溯源到 `code/stata/*.log` 或 `tables/`
 
-3. **Produce a detailed report** for each file listing every finding with:
-   - Location (line number or slide title)
-   - Current text (what's wrong)
-   - Proposed fix (what it should be)
-   - Category and severity
+3. **逐文件产出详细报告**,每处发现包含:
+   - 位置(行号或小节)
+   - 原文(哪里错)
+   - 建议(应改成什么)
+   - 类别与严重度
 
-4. **Save each report** to `quality_reports/`:
-   - For `.tex` files: `quality_reports/FILENAME_report.md`
-   - For `.qmd` files: `quality_reports/FILENAME_qmd_report.md`
+4. **保存报告**至 `quality_reports/`:
+   - `quality_reports/paper_proofread_report.md`
 
-5. **IMPORTANT: Do NOT edit any source files.**
-   Only produce the report. Fixes are applied separately after user review.
+5. **重要:不编辑任何源文件。**
+   只出报告;用户审阅批准后再应用。
 
-6. **Present summary** to the user:
-   - Total issues found per file
-   - Breakdown by category
-   - Most critical issues highlighted
+6. **向用户呈交摘要:**
+   - 每文件问题总数
+   - 按类别分布
+   - 突出最严重问题
